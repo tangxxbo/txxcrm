@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.couyis.txxcrm.customer.dao.CustomerMapper">
+	<resultMap id="BaseResultMap" type="com.couyis.txxcrm.customer.pojo.Customer">
+		<!-- 查询与实体类对应关系 -->
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+		<result column="COUNTRY" jdbcType="VARCHAR" property="country" />
+		<result column="AREA" jdbcType="VARCHAR" property="area" />
+		<result column="CITY" jdbcType="VARCHAR" property="city" />
+		<result column="TEL" jdbcType="VARCHAR" property="tel" />
+		<result column="MOB" jdbcType="VARCHAR" property="mob" />
+		<result column="CREATEUSER" jdbcType="VARCHAR" property="createUser" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATEUSER" jdbcType="VARCHAR" property="updateUser" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="stopTime" />
+	</resultMap>
+	<sql id="Page_Column_List"><!-- 查询的字段 -->
+		ID,CODE,NAME ,ADDRESS, ENABLE, COUNTRY, AREA, CITY, TEL,MOB,CREATEUSER,CREATETIME,UPDATEUSER,UPDATETIME
+	</sql>
+	<sql id="Page_Execute"><!-- 分页查询 -->
+		LIMIT ${offset},${pageSize}
+	</sql>
+	<sql id="Page_Execute_Head"><!-- 分页查询 -->
+		<![CDATA[ SELECT * FROM (SELECT A.*, ROWNUM RN FROM ( ]]>
+	</sql>
+	
+	<sql id="Page_Execute_Tail"><!-- 分页查询 -->
+		<![CDATA[ ) A WHERE ROWNUM <= ${pageSize}+${offset} )WHERE RN > ${offset}]]>
+	</sql>
+	
+	<sql id="Page_Order_By"><!-- 排序字段 -->
+		<if test="orderField != null and orderDirection != null">
+			ORDER BY ${orderField} ${orderDirection}
+		</if>
+	</sql>
+
+	<!-- 查询记录数 -->
+	<select id="findCount" parameterType="com.couyis.txxcrm.customer.bean.CustomerBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM txx_base_customer
+		WHERE 1=1
+		<if test="name != null and name !=''">
+			AND NAME LIKE '%${name}%'
+		</if>
+		<if test="code != null and clazz !=''">
+			AND CODE LIKE '%${code}%'
+		</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.couyis.txxcrm.customer.bean.CustomerBean"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Page_Column_List" />
+		FROM txx_base_customer
+		WHERE 1=1
+		<if test="name != null and name !=''">
+			AND NAME LIKE '%${name}%'
+		</if>
+		<if test="code != null and code !=''">
+			AND CODE LIKE '%${code}%'
+		</if>
+		<include refid="Page_Order_By" />
+		<include refid="Page_Execute" />
+	</select>
+
+	<!-- 查询所有 -->
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Page_Column_List" />
+		FROM txx_base_customer
+	</select>
+	
+	<!-- 根据状态查询 
+	<select id="findByStatus" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Page_Column_List" />
+		FROM CUSTOMER_BASE WHERE STATUS_ = #{status,jdbcType=VARCHAR}
+	</select>-->
+
+	<!-- 获取单条数据 -->
+	<select id="findById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Page_Column_List" />
+		FROM txx_base_customer
+		WHERE ID = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findMaxCode" parameterType="java.lang.String" resultType = "java.lang.String">
+ 		SELECT
+ 		MAX(A.CODE) AS CODE
+ 		FROM txx_custmer_base_info A 
+ 	</select>
+ 	
+ 	<select id="findStartCode" parameterType="java.lang.String" resultType = "java.lang.String">
+ 		SELECT
+ 		A.STARTCODE
+ 		FROM base_code_range A 
+ 		WHERE 1=1
+ 		<if test="CODE != null">
+ 		AND A.CODE = #{code,jdbcType=VARCHAR}
+ 		</if>
+ 	</select>
+ 	
+ 	<select id="findCodeByUrl" parameterType="java.lang.String" resultType = "java.lang.String">
+ 		SELECT
+ 		A.CODE
+ 		FROM base_code_range A LEFT JOIN base_code_range_distribution B
+ 		on B.codeRangeId = A.id
+ 		WHERE 1=1 
+ 		<if test="URL != null">
+ 		AND B.typeUrl = #{typeUrl,jdbcType=VARCHAR}
+ 		</if>
+ 	</select>
+
+	<!-- 删除数据 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM
+		txx_base_customer
+		WHERE ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 插入数据 -->
+	<insert id="save" parameterType="com.couyis.txxcrm.customer.pojo.Customer">
+		INSERT INTO
+		txx_base_customer
+		(ID,CODE,NAME,
+		ADDRESS, ENABLE,
+		COUNTRY,AREA,CITY,TEL,MOB, CREATEUSER,CREATETIME)
+		VALUES
+		(#{id,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{enable,jdbcType=INTEGER},
+		#{country,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},
+		#{mob,jdbcType=VARCHAR},
+		#{createuser,jdbcType=VARCHAR},
+		#{createtime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<!-- 更新数据 -->
+	<update id="update" parameterType="com.couyis.txxcrm.customer.pojo.Customer">
+		UPDATE txx_base_customer
+		<set>
+			<if test="code != null">
+				CODE = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="enable != null">
+				ENABLE = #{enable,jdbcType=INTEGER},
+			</if>
+			<if test="country != null">
+				COUNTRY = #{country,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				AREA = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				CITY = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				TEL = #{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="mob != null">
+				MOB = #{mob,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				UPDATEUSER = #{updateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>
