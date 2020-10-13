@@ -8,7 +8,7 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.couyis</groupId>
+	<groupId>com.couyis.txxcrm</groupId>
 	<artifactId>couyis-txxCrm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>couyis-txxCrm</name>
@@ -47,7 +47,7 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.couyis</groupId>
+			<groupId>com.couyis.base</groupId>
 			<artifactId>
 				couyis-tbase
 			</artifactId>

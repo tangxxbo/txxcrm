@@ -9,6 +9,7 @@
 		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
 		<result column="ENABLE" jdbcType="VARCHAR" property="enable" />
 		<result column="COUNTRY" jdbcType="VARCHAR" property="country" />
+		<result column="HOMEABROAD" jdbcType="VARCHAR" property="homeAbroad" />
 		<result column="AREA" jdbcType="VARCHAR" property="area" />
 		<result column="CITY" jdbcType="VARCHAR" property="city" />
 		<result column="TEL" jdbcType="VARCHAR" property="tel" />
@@ -19,7 +20,7 @@
 		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="stopTime" />
 	</resultMap>
 	<sql id="Page_Column_List"><!-- 查询的字段 -->
-		ID,CODE,NAME ,ADDRESS, ENABLE, COUNTRY, AREA, CITY, TEL,MOB,CREATEUSER,CREATETIME,UPDATEUSER,UPDATETIME
+		ID,CODE,NAME ,ADDRESS, ENABLE, COUNTRY,HOMEABROAD, AREA, CITY, TEL,MOB,CREATEUSER,CREATETIME,UPDATEUSER,UPDATETIME
 	</sql>
 	<sql id="Page_Execute"><!-- 分页查询 -->
 		LIMIT ${offset},${pageSize}
@@ -131,7 +132,7 @@
 		txx_base_customer
 		(ID,CODE,NAME,
 		ADDRESS, ENABLE,
-		COUNTRY,AREA,CITY,TEL,MOB, CREATEUSER,CREATETIME)
+		COUNTRY,HOMEABROAD,AREA,CITY,TEL,MOB, CREATEUSER,CREATETIME)
 		VALUES
 		(#{id,jdbcType=VARCHAR},
 		#{code,jdbcType=VARCHAR},
@@ -139,12 +140,13 @@
 		#{address,jdbcType=VARCHAR},
 		#{enable,jdbcType=INTEGER},
 		#{country,jdbcType=VARCHAR},
+		#{homeAbroad,jdbcType=VARCHAR},
 		#{area,jdbcType=VARCHAR},
 		#{city,jdbcType=VARCHAR},
 		#{tel,jdbcType=VARCHAR},
 		#{mob,jdbcType=VARCHAR},
-		#{createuser,jdbcType=VARCHAR},
-		#{createtime,jdbcType=TIMESTAMP})
+		#{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP})
 	</insert>
 
 	<!-- 更新数据 -->
@@ -165,6 +167,9 @@
 			</if>
 			<if test="country != null">
 				COUNTRY = #{country,jdbcType=VARCHAR},
+			</if>
+			<if test="homeAbroad != null">
+				HOMEABROAD = #{homeAbroad,jdbcType=VARCHAR},
 			</if>
 			<if test="area != null">
 				AREA = #{area,jdbcType=VARCHAR},

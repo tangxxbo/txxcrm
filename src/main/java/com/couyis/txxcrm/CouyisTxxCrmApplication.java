@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableEurekaClient
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCaching
-@ComponentScan("com.couyis.**")
-@MapperScan("com.couyis.**.dao")
+@ComponentScan("com.couyis.txxcrm.**")
+@MapperScan("com.couyis.txxcrm.**.dao")
 public class CouyisTxxCrmApplication {
 
 	public static void main(String[] args) {

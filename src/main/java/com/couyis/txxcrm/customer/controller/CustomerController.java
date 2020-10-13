@@ -25,7 +25,7 @@ public class CustomerController extends BaseController{
 	
 	
 	@RequestMapping(value = "/add")
-	public void save(Customer customer,HttpServletRequest request) {
+	public void save(@RequestBody Customer customer,HttpServletRequest request) {
 		customer.setCode(cusCode(request.getServletPath().toString()));
 		customer.setCreateUser(getAccount(request));
 		customer.setCreateTime(getNow());

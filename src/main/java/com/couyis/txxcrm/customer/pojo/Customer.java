@@ -15,12 +15,14 @@ public class Customer {
 	private String address;//地址
 		
 	private Boolean enable;//是否禁用
+
+	private String homeAbroad;//所属区域
 	
 	private String country;//所属国家
 	
-	private String area;//所属地区/省份
-	
 	private String city;//所属城市
+	
+	private String area;//所属地区
 	
 	private String tel;//电话
 	
@@ -68,13 +70,20 @@ public class Customer {
 		this.address = address;
 	}
 
-
 	public Boolean getEnable() {
 		return enable;
 	}
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
+	}
+
+	public String getHomeAbroad() {
+		return homeAbroad;
+	}
+
+	public void setHomeAbroad(String homeAbroad) {
+		this.homeAbroad = homeAbroad;
 	}
 
 	public String getCountry() {
@@ -85,20 +94,20 @@ public class Customer {
 		this.country = country;
 	}
 
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
 	public String getCity() {
 		return city;
 	}
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 	public String getTel() {
@@ -148,6 +157,7 @@ public class Customer {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
 	
 	
 }
